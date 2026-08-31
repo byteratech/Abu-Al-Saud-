@@ -19,6 +19,7 @@ import { CaseStudyView } from './components/projects/CaseStudyView';
 import { ServicesView } from './components/services/ServicesView';
 import { ContactView } from './components/contact/ContactView';
 import { AdminDashboard } from './components/admin/AdminDashboard';
+import { FloatingWhatsAppButton } from './components/common/FloatingWhatsAppButton';
 
 function AppContent() {
   const [activeView, setActiveView] = useState<ActiveView>({ type: 'home' });
@@ -38,6 +39,8 @@ function AppContent() {
       const hash = window.location.hash.replace('#', '');
       if (!hash || hash === 'home') {
         setActiveView({ type: 'home' });
+      } else if (hash === 'services') {
+        setActiveView({ type: 'services' });
       } else if (hash === 'about') {
         setActiveView({ type: 'about' });
       } else if (hash === 'skills') {
@@ -70,7 +73,8 @@ function AppContent() {
   const navigateTo = (view: ActiveView) => {
     setActiveView(view);
     let hash = 'home';
-    if (view.type === 'about') hash = 'about';
+    if (view.type === 'services') hash = 'services';
+    else if (view.type === 'about') hash = 'about';
     else if (view.type === 'skills') hash = 'skills';
     else if (view.type === 'contact') hash = 'contact';
     else if (view.type === 'admin') hash = 'admin';
@@ -172,6 +176,9 @@ function AppContent() {
         )}
 
       </main>
+
+      {/* Floating WhatsApp Action Button */}
+      <FloatingWhatsAppButton />
 
       {/* Footer */}
       <Footer setActiveView={navigateTo} />

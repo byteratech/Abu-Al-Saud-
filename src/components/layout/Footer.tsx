@@ -63,6 +63,7 @@ export const Footer: React.FC<FooterProps> = ({ setActiveView }) => {
 
   const navLinks: { id: ActiveView['type']; label: string }[] = [
     { id: 'home', label: t.nav.home },
+    { id: 'services', label: t.nav.services },
     { id: 'projects', label: t.nav.projects },
     { id: 'content', label: t.nav.content },
     { id: 'about', label: t.nav.about },
