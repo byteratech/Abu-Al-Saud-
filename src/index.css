@@ -231,6 +231,13 @@ html.light {
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02) !important;
   }
 
+  /* Services CTA banner gradient container */
+  .bg-gradient-to-br.from-\[\#0D111A\].to-\[\#111722\] {
+    background-image: linear-gradient(to bottom right, #FFFFFF, #F1F5F9) !important;
+    border-color: var(--border-color) !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02) !important;
+  }
+
   /* Newsletter Email input field */
   .bg-gradient-to-br.from-\[\#111722\].to-\[\#0A0E17\] input[type="email"] {
     background-color: #FFFFFF !important;
