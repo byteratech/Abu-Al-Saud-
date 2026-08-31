@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../lib/firebase';
-import { collection, getDocs, doc, setDoc, deleteDoc } from 'firebase/firestore';
+import { collection, onSnapshot, doc, setDoc, deleteDoc } from 'firebase/firestore';
 import { 
   Mail, 
   Trash2, 
@@ -10,7 +10,8 @@ import {
   Clock, 
   X,
   MailOpen,
-  MessageSquare
+  MessageSquare,
+  Volume2
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { CMSMessage } from '../../types';
@@ -25,63 +26,51 @@ export const AdminMessages: React.FC<AdminMessagesProps> = ({ onMessagesCountCha
   const [isLoading, setIsLoading] = useState(true);
   const [selectedMsg, setSelectedMsg] = useState<CMSMessage | null>(null);
 
-  const fetchMessages = async () => {
-    try {
-      setIsLoading(true);
-      const snap = await getDocs(collection(db, 'messages'));
-      const list: CMSMessage[] = [];
-      snap.forEach(doc => {
-        list.push({ id: doc.id, ...doc.data() } as CMSMessage);
-      });
-      list.sort((a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime());
-      setMessages(list);
+  useEffect(() => {
+    setIsLoading(true);
+    let unsubscribe: () => void = () => {};
 
-      const unread = list.filter(m => !m.read).length;
-      if (onMessagesCountChange) {
-        onMessagesCountChange(unread);
-      }
-      try {
-        localStorage.setItem('cms_local_messages', JSON.stringify(list));
-      } catch (_) {}
-    } catch (err) {
-      console.warn('Failed to load messages from Firestore, falling back to localStorage:', err);
-      try {
-        const saved = localStorage.getItem('cms_local_messages');
-        if (saved) {
-          const list = JSON.parse(saved);
-          setMessages(list);
-          const unread = list.filter((m: any) => !m.read).length;
-          if (onMessagesCountChange) {
-            onMessagesCountChange(unread);
-          }
-        } else {
-          const defaultMessages: CMSMessage[] = [
-            {
-              id: 'msg-1',
-              senderName: 'John Doe',
-              email: 'john.doe@securityfirm.com',
-              message: 'Hello Abu Al-Saud, I am interested in your penetration testing services for our enterprise web application. Please get in touch.',
-              read: false,
-              createdAt: new Date().toISOString()
-            }
-          ];
-          setMessages(defaultMessages);
-          if (onMessagesCountChange) {
-            onMessagesCountChange(1);
-          }
-          localStorage.setItem('cms_local_messages', JSON.stringify(defaultMessages));
+    try {
+      unsubscribe = onSnapshot(collection(db, 'messages'), (snapshot) => {
+        const list: CMSMessage[] = [];
+        snapshot.forEach(docSnap => {
+          list.push({ id: docSnap.id, ...docSnap.data() } as CMSMessage);
+        });
+        list.sort((a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime());
+        setMessages(list);
+        setIsLoading(false);
+
+        const unread = list.filter(m => !m.read).length;
+        if (onMessagesCountChange) {
+          onMessagesCountChange(unread);
         }
-      } catch (_) {
-        setMessages([]);
-      }
-    } finally {
+        try {
+          localStorage.setItem('cms_local_messages', JSON.stringify(list));
+        } catch (_) {}
+      }, (error) => {
+        console.warn('Firestore real-time messages listener fallback to localStorage:', error);
+        setIsLoading(false);
+        try {
+          const saved = localStorage.getItem('cms_local_messages');
+          if (saved) {
+            const list = JSON.parse(saved);
+            setMessages(list);
+            const unread = list.filter((m: any) => !m.read).length;
+            if (onMessagesCountChange) {
+              onMessagesCountChange(unread);
+            }
+          }
+        } catch (_) {}
+      });
+    } catch (err) {
+      console.error('Error setting up onSnapshot for messages:', err);
       setIsLoading(false);
     }
-  };
 
-  useEffect(() => {
-    fetchMessages();
-  }, []);
+    return () => {
+      unsubscribe();
+    };
+  }, [onMessagesCountChange]);
 
   const handleMarkAsRead = async (msg: CMSMessage, forceRead = true) => {
     try {

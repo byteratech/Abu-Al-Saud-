@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { personalProfile } from '../../data/profile';
-import { ActiveView } from '../../types';
+import { ActiveView, SiteSettings } from '../../types';
+import { db } from '../../lib/firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
 import { 
   Github, 
   Linkedin, 
@@ -26,6 +28,24 @@ export const Footer: React.FC<FooterProps> = ({ setActiveView }) => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [error, setError] = useState(false);
+  const [customLogo, setCustomLogo] = useState<string | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(doc(db, 'settings', 'global'), (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data() as SiteSettings;
+        if (data.logo && data.logo.trim() !== '') {
+          setCustomLogo(data.logo);
+        } else {
+          setCustomLogo(null);
+        }
+      }
+    }, (err) => {
+      console.warn('Footer settings listener notice:', err);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -120,8 +140,12 @@ export const Footer: React.FC<FooterProps> = ({ setActiveView }) => {
           {/* Brand Info & Location */}
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded bg-[#111722] border border-[#202735] flex items-center justify-center text-[#5B7CFA]">
-                <Shield className="w-4 h-4" />
+              <div className="w-8 h-8 rounded-lg bg-[#111722] border border-[#202735] flex items-center justify-center text-[#5B7CFA] overflow-hidden p-1">
+                {customLogo ? (
+                  <img src={customLogo} alt="Logo" className="w-full h-full object-contain" />
+                ) : (
+                  <Shield className="w-4 h-4" />
+                )}
               </div>
               <span className="font-bold text-lg text-[#F3F5F7]">
                 {t.brand.name}

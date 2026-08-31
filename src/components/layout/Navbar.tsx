@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useTheme } from '../../context/ThemeContext';
-import { ActiveView } from '../../types';
+import { ActiveView, SiteSettings } from '../../types';
+import { db } from '../../lib/firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
 import { 
   Menu, 
   X, 
@@ -29,6 +31,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeView, setActiveView }) => 
   const { theme, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [customLogo, setCustomLogo] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,6 +39,23 @@ export const Navbar: React.FC<NavbarProps> = ({ activeView, setActiveView }) => 
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(doc(db, 'settings', 'global'), (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data() as SiteSettings;
+        if (data.logo && data.logo.trim() !== '') {
+          setCustomLogo(data.logo);
+        } else {
+          setCustomLogo(null);
+        }
+      }
+    }, (error) => {
+      console.warn('Navbar settings listener notice:', error);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const navItems: { id: ActiveView['type']; label: string; icon: React.FC<{ className?: string }> }[] = [
@@ -71,8 +91,12 @@ export const Navbar: React.FC<NavbarProps> = ({ activeView, setActiveView }) => 
             onClick={() => handleNavClick('home')}
             className="flex items-center gap-3 group text-start focus:outline-none focus-visible:ring-2 focus-visible:ring-[#5B7CFA] rounded-lg p-1"
           >
-            <div className="w-9 h-9 rounded-md bg-[#111722] border border-[#202735] flex items-center justify-center text-[#5B7CFA] group-hover:border-[#5B7CFA]/50 group-hover:bg-[#151B26] transition-all overflow-hidden">
-              <img src="https://res.cloudinary.com/f6t2sqiv/image/upload/v1787853834/Artboard_1_9x.png" alt="Logo" className="w-6 h-6 object-contain" />
+            <div className="w-9 h-9 rounded-md bg-[#111722] border border-[#202735] flex items-center justify-center text-[#5B7CFA] group-hover:border-[#5B7CFA]/50 group-hover:bg-[#151B26] transition-all overflow-hidden p-1">
+              <img 
+                src={customLogo || "https://res.cloudinary.com/f6t2sqiv/image/upload/v1787853834/Artboard_1_9x.png"} 
+                alt="Logo" 
+                className="w-full h-full object-contain" 
+              />
             </div>
             <div className="flex flex-col">
               <span className="font-bold text-base tracking-tight text-[#F3F5F7] group-hover:text-white transition-colors">

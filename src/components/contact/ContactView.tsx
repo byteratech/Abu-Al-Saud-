@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { personalProfile } from '../../data/profile';
+import { sendContactMessageAndNotify } from '../../lib/emailService';
+import { playNotificationSound } from '../../lib/notificationSound';
 import { 
   Mail, 
   Send, 
@@ -14,7 +16,9 @@ import {
   Check, 
   Copy, 
   AlertCircle,
-  MessageSquare
+  MessageSquare,
+  Loader2,
+  Bell
 } from 'lucide-react';
 
 export const ContactView: React.FC = () => {
@@ -48,7 +52,7 @@ export const ContactView: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validate fields
@@ -67,11 +71,28 @@ export const ContactView: React.FC = () => {
 
     setStatus('submitting');
     
-    // Simulate real network request completion cleanly
-    setTimeout(() => {
-      setStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 1000);
+    try {
+      const res = await sendContactMessageAndNotify({
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message
+      });
+
+      if (res.success) {
+        setStatus('success');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        // Play gentle audio confirmation
+        playNotificationSound();
+      } else {
+        setStatus('error');
+        setErrorMessage(language === 'ar' ? 'تعذر إرسال الرسالة، يرجى المحاولة مرة أخرى.' : 'Failed to send message, please try again.');
+      }
+    } catch (err) {
+      console.error('Contact submission error:', err);
+      setStatus('error');
+      setErrorMessage(language === 'ar' ? 'حدث خطأ غير متوقع أثناء إرسال الرسالة.' : 'An unexpected error occurred while sending your message.');
+    }
   };
 
   return (

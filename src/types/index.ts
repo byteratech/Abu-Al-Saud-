@@ -223,3 +223,79 @@ export interface SiteSettings {
   };
   language: string;
 }
+
+export interface LineItem {
+  id: string;
+  description: string;
+  quantity: number;
+  unitPrice: number;
+  total: number;
+}
+
+export type QuotationStatus = 'draft' | 'sent' | 'accepted' | 'rejected' | 'converted';
+export type InvoiceStatus = 'pending' | 'partially_paid' | 'paid' | 'overdue' | 'cancelled';
+export type SupportedCurrency = 'EGP' | 'USD' | 'SAR' | 'EUR' | 'AED';
+
+export interface CMSQuotation {
+  id: string;
+  quotationNumber: string;
+  clientName: string;
+  clientCompany?: string;
+  clientEmail?: string;
+  clientPhone?: string;
+  clientAddress?: string;
+  issueDate: string;
+  validUntil: string;
+  currency: SupportedCurrency;
+  items: LineItem[];
+  subtotal: number;
+  discount: number;
+  taxRate: number;
+  taxAmount: number;
+  total: number;
+  notes?: string;
+  terms?: string;
+  status: QuotationStatus;
+  convertedInvoiceId?: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface CMSInvoice {
+  id: string;
+  invoiceNumber: string;
+  quotationId?: string;
+  quotationNumber?: string;
+  clientName: string;
+  clientCompany?: string;
+  clientEmail?: string;
+  clientPhone?: string;
+  clientAddress?: string;
+  issueDate: string;
+  dueDate: string;
+  currency: SupportedCurrency;
+  items: LineItem[];
+  subtotal: number;
+  discount: number;
+  taxRate: number;
+  taxAmount: number;
+  total: number;
+  paidAmount: number;
+  remainingAmount: number;
+  paymentStatus: InvoiceStatus;
+  paymentMethod?: string;
+  paymentDetails?: string;
+  notes?: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface AdminSecurityConfig {
+  adminEmail: string;
+  adminPassword?: string;
+  recoveryPhone: string;
+  recoveryOtp?: string;
+  recoveryOtpExpiresAt?: number;
+  lastPasswordChangedAt?: string;
+}
+

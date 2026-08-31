@@ -388,6 +388,50 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({ onNavigate }) => {
 
       </div>
 
+      {/* Quick Financial Operations (Quotations & Invoices) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div 
+          onClick={() => onNavigate('quotations')}
+          className="p-4 rounded-2xl bg-[#0D111A] border border-[#5B7CFA]/20 hover:border-[#5B7CFA] transition-all cursor-pointer flex items-center justify-between group"
+        >
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-[#5B7CFA]/15 text-[#5B7CFA] group-hover:scale-105 transition-transform">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-[#F3F5F7]">
+                {language === 'ar' ? 'إنشاء وإدارة عروض الأسعار (Quotations)' : 'Create & Manage Quotations'}
+              </h4>
+              <p className="text-[11px] text-[#9AA4B2]">
+                {language === 'ar' ? 'إعداد عروض أسعار تفصيلية للعملاء مع إمكانية تحويلها لفواتير فورية' : 'Create professional client quotes & convert to invoices'}
+              </p>
+            </div>
+          </div>
+          <ArrowUpRight className="w-4 h-4 text-[#5B7CFA] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+        </div>
+
+        <div 
+          onClick={() => onNavigate('invoices')}
+          className="p-4 rounded-2xl bg-[#0D111A] border border-[#10B981]/20 hover:border-[#10B981] transition-all cursor-pointer flex items-center justify-between group"
+        >
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-[#10B981]/15 text-[#10B981] group-hover:scale-105 transition-transform">
+              <CheckCircle2 className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-[#F3F5F7]">
+                {language === 'ar' ? 'إدارة الفواتير والمطالبات المالية (Invoices)' : 'Billing & Invoice Tracking'}
+              </h4>
+              <p className="text-[11px] text-[#9AA4B2]">
+                {language === 'ar' ? 'متابعة الدفعات وحالة التحصيل ومشاركة فواتير PDF عبر واتساب' : 'Track payment statuses, print PDF invoices, and send to clients'}
+              </p>
+            </div>
+          </div>
+          <ArrowUpRight className="w-4 h-4 text-[#10B981] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+        </div>
+      </div>
+
+
       {/* Overview Analytics Details (Recent Activity) */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
