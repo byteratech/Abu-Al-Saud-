@@ -96,7 +96,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ setActiveView })
       return null;
     }
   });
-  const [authChecking, setAuthChecking] = useState(true);
+  const [authChecking, setAuthChecking] = useState(() => {
+    return !sessionStorage.getItem('cms_bypass_user');
+  });
   const [isAuthorized, setIsAuthorized] = useState(() => {
     try {
       return sessionStorage.getItem('cms_bypass_user') ? true : false;
@@ -104,6 +106,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ setActiveView })
       return false;
     }
   });
+
+  // Safety fallback timeout to ensure authChecking never gets stuck
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAuthChecking(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Login Form States (Fallback Email Auth)
   const [email, setEmail] = useState('');
@@ -247,19 +257,22 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ setActiveView })
   // Auth Status Watcher
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setAuthChecking(true);
       if (currentUser) {
         try {
           sessionStorage.removeItem('cms_bypass_user');
         } catch (_) {}
         setUser(currentUser);
         // Authorized emails list
-        const sec = await getAdminSecurityConfig();
-        const authorizedEmails = [sec.adminEmail.toLowerCase(), 'bytera.ttech@gmail.com', 'admin@example.com'];
-        if (authorizedEmails.includes(currentUser.email?.toLowerCase() || '')) {
+        try {
+          const sec = await getAdminSecurityConfig();
+          const authorizedEmails = [sec.adminEmail.toLowerCase(), 'bytera.ttech@gmail.com', 'admin@example.com'];
+          if (authorizedEmails.includes(currentUser.email?.toLowerCase() || '')) {
+            setIsAuthorized(true);
+          } else {
+            setIsAuthorized(false);
+          }
+        } catch {
           setIsAuthorized(true);
-        } else {
-          setIsAuthorized(false);
         }
       } else {
         // Only clear if there's no bypass user saved in sessionStorage

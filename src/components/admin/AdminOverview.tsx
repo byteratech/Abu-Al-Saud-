@@ -13,7 +13,12 @@ import {
   Database,
   ArrowUpRight,
   Clock,
-  CheckCircle2
+  CheckCircle2,
+  Calendar,
+  Flame,
+  CheckSquare,
+  ArrowRight,
+  AlertCircle
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { projectItems } from '../../data/projects';
@@ -55,6 +60,29 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({ onNavigate }) => {
   const [recentPosts, setRecentPosts] = useState<any[]>([]);
   const [isSeeding, setIsSeeding] = useState(false);
   const [seedSuccess, setSeedSuccess] = useState(false);
+  const [tasks, setTasks] = useState<any[]>([]);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('workspace_tasks');
+      if (saved) {
+        setTasks(JSON.parse(saved));
+      }
+    } catch (_) {}
+  }, []);
+
+  const handleToggleTask = (taskId: string) => {
+    const updated = tasks.map(t => t.id === taskId ? { ...t, completed: !t.completed } : t);
+    setTasks(updated);
+    try {
+      localStorage.setItem('workspace_tasks', JSON.stringify(updated));
+    } catch (_) {}
+  };
+
+  const todayStr = new Date().toISOString().split('T')[0];
+  const urgentOrTodayTasks = tasks.filter(t => !t.completed && (t.date === todayStr || t.priority === 'high'));
+  const todayTasksCount = tasks.filter(t => t.date === todayStr && !t.completed).length;
+  const urgentTasksCount = tasks.filter(t => t.priority === 'high' && !t.completed).length;
 
   const fetchStats = async () => {
     try {
@@ -300,6 +328,93 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({ onNavigate }) => {
           </span>
         </div>
       )}
+
+      {/* Daily Summary Status Card */}
+      <div className="p-6 rounded-2xl bg-gradient-to-br from-[#131B2E] via-[#0D111A] to-[#0A0E17] border border-[#202735] shadow-xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[#5B7CFA]/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+          <div className="flex items-center gap-3">
+            <div className="p-3 rounded-xl bg-[#5B7CFA]/10 border border-[#5B7CFA]/30 text-[#5B7CFA]">
+              <Calendar className="w-6 h-6" />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-[#F3F5F7]">
+                {language === 'ar' ? 'الملخص اليومي للمهام (Daily Summary)' : 'Daily Tasks Summary'}
+              </h2>
+              <p className="text-xs text-[#9AA4B2] mt-0.5">
+                {language === 'ar' 
+                  ? 'المهام المستحقة اليوم أو المعلمة كعاجلة تتطلب اهتمامك الفوري'
+                  : 'Tasks due today or marked as urgent requiring your immediate attention'}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#182234] border border-[#2A3447] text-xs text-[#F3F5F7]">
+              <span className="w-2 h-2 rounded-full bg-[#5B7CFA]"></span>
+              <span>{todayTasksCount} {language === 'ar' ? 'مستحقة اليوم' : 'due today'}</span>
+            </div>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#EF4444]/10 border border-[#EF4444]/30 text-xs text-[#EF4444]">
+              <Flame className="w-3.5 h-3.5" />
+              <span>{urgentTasksCount} {language === 'ar' ? 'عاجلة' : 'urgent'}</span>
+            </div>
+            <button
+              onClick={() => onNavigate('workspace')}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#5B7CFA] hover:bg-[#4A6CE7] text-white text-xs font-semibold transition-all shadow-sm"
+            >
+              <span>{language === 'ar' ? 'مساحة العمل الكاملة' : 'Full Workspace'}</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+
+        {urgentOrTodayTasks.length === 0 ? (
+          <div className="p-6 rounded-xl bg-[#0A0E17]/60 border border-[#1E293B] text-center text-[#9AA4B2] text-xs sm:text-sm">
+            {language === 'ar' 
+              ? '🎉 رائع! لا توجد مهام معلقة تستحق اليوم أو عاجلة. جدولك نظيف تماماً.'
+              : '🎉 Awesome! No urgent or due-today tasks pending. Your schedule is clear.'}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {urgentOrTodayTasks.map((task) => (
+              <div 
+                key={task.id}
+                className={`p-4 rounded-xl border transition-all flex items-start gap-3 bg-[#0A0E17]/80 ${
+                  task.priority === 'high' 
+                    ? 'border-[#EF4444]/40 hover:border-[#EF4444]/70' 
+                    : 'border-[#202735] hover:border-[#5B7CFA]/40'
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  checked={task.completed}
+                  onChange={() => handleToggleTask(task.id)}
+                  className="mt-1 w-4 h-4 rounded border-[#334155] bg-[#1E293B] text-[#5B7CFA] focus:ring-0 cursor-pointer"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs font-semibold px-2 py-0.5 rounded bg-[#182234] text-[#9AA4B2] uppercase tracking-wider">
+                      {task.category}
+                    </span>
+                    {task.priority === 'high' && (
+                      <span className="flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#EF4444]/20 text-[#EF4444]">
+                        <Flame className="w-3 h-3" />
+                        {language === 'ar' ? 'عاجل' : 'Urgent'}
+                      </span>
+                    )}
+                  </div>
+                  <h4 className="text-sm font-medium text-[#F3F5F7] mt-1.5 truncate">
+                    {task.title}
+                  </h4>
+                  <div className="flex items-center gap-2 mt-2 text-[11px] text-[#9AA4B2]">
+                    <Clock className="w-3 h-3 text-[#5B7CFA]" />
+                    <span>{task.date}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Metrics Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
