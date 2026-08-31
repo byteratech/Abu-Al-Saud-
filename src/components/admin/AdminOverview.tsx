@@ -23,6 +23,7 @@ import {
 import { useLanguage } from '../../context/LanguageContext';
 import { projectItems } from '../../data/projects';
 import { contentItems } from '../../data/content';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 
 interface OverviewStats {
   totalProjects: number;
@@ -83,6 +84,28 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({ onNavigate }) => {
   const urgentOrTodayTasks = tasks.filter(t => !t.completed && (t.date === todayStr || t.priority === 'high'));
   const todayTasksCount = tasks.filter(t => t.date === todayStr && !t.completed).length;
   const urgentTasksCount = tasks.filter(t => t.priority === 'high' && !t.completed).length;
+
+  const getLast7DaysStats = () => {
+    const days = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const dateStr = d.toISOString().split('T')[0];
+      const label = d.toLocaleDateString(language === 'ar' ? 'ar-EG' : 'en-US', { weekday: 'short', month: 'numeric', day: 'numeric' });
+      
+      const dayTasks = tasks.filter(t => t.date === dateStr);
+      const completedCount = dayTasks.filter(t => t.completed).length;
+      const totalCount = dayTasks.length;
+
+      days.push({
+        date: dateStr,
+        label,
+        completed: completedCount,
+        total: totalCount || 0,
+      });
+    }
+    return days;
+  };
 
   const fetchStats = async () => {
     try {
@@ -414,6 +437,44 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({ onNavigate }) => {
             ))}
           </div>
         )}
+      </div>
+
+      {/* 7-Day Task Completion Progress Chart */}
+      <div className="p-6 rounded-2xl bg-[#0D111A] border border-[#202735] shadow-xl space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-[#5B7CFA]/10 border border-[#5B7CFA]/30 text-[#5B7CFA]">
+              <BarChart3 className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-[#F3F5F7]">
+                {language === 'ar' ? 'إحصائيات إنجاز المهام (آخر 7 أيام)' : '7-Day Task Completion Progress'}
+              </h3>
+              <p className="text-xs text-[#9AA4B2] mt-0.5">
+                {language === 'ar' ? 'متابعة المهام المكتملة وإجمالي المهام المسجلة يومياً' : 'Tracking completed vs total tasks over the last 7 days'}
+              </p>
+            </div>
+          </div>
+          <span className="text-xs font-mono px-3 py-1 rounded-lg bg-[#111722] border border-[#202735] text-[#5B7CFA]">
+            {language === 'ar' ? 'رسم بياني تفاعلي' : 'Recharts Analytics'}
+          </span>
+        </div>
+
+        <div className="h-64 w-full pt-4">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={getLast7DaysStats()} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#202735" vertical={false} />
+              <XAxis dataKey="label" stroke="#9AA4B2" fontSize={11} tickLine={false} />
+              <YAxis stroke="#9AA4B2" fontSize={11} tickLine={false} allowDecimals={false} />
+              <Tooltip 
+                contentStyle={{ backgroundColor: '#111722', borderColor: '#202735', borderRadius: '12px', color: '#F3F5F7', fontSize: '12px' }}
+                cursor={{ fill: 'rgba(91, 124, 250, 0.08)' }}
+              />
+              <Bar dataKey="total" name={language === 'ar' ? 'إجمالي المهام' : 'Total Tasks'} fill="#2A3447" radius={[6, 6, 0, 0]} />
+              <Bar dataKey="completed" name={language === 'ar' ? 'المكتملة' : 'Completed'} fill="#5B7CFA" radius={[6, 6, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </div>
 
       {/* Metrics Cards Grid */}
