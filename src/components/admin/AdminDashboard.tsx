@@ -5,8 +5,6 @@ import {
 } from '../../lib/firebase';
 import { 
   onAuthStateChanged, 
-  signInWithPopup, 
-  GoogleAuthProvider, 
   signOut,
   signInWithEmailAndPassword
 } from 'firebase/auth';
@@ -28,7 +26,6 @@ import {
   ShieldAlert, 
   Lock, 
   ShieldCheck,
-  Chrome,
   Terminal,
   Key,
   Calculator,
@@ -175,7 +172,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ setActiveView })
     setActiveAlertMessage({
       id: 'test-preview',
       senderName: 'Test Notification',
-      email: 'bytera.ttech@gmail.com',
+      email: 'abualss3ud@gmail.com',
       message: language === 'ar' ? 'هذا تنبيه صوتي تجريبي للتأكد من وصول وتنبيه الرسائل بنجاح!' : 'This is a test notification verifying sound and live alert delivery!',
       read: false,
       createdAt: new Date().toISOString()
@@ -265,7 +262,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ setActiveView })
         // Authorized emails list
         try {
           const sec = await getAdminSecurityConfig();
-          const authorizedEmails = [sec.adminEmail.toLowerCase(), 'bytera.ttech@gmail.com', 'admin@example.com'];
+          const authorizedEmails = [sec.adminEmail.toLowerCase(), 'abualss3ud@gmail.com', 'admin@example.com'];
           if (authorizedEmails.includes(currentUser.email?.toLowerCase() || '')) {
             setIsAuthorized(true);
           } else {
@@ -328,24 +325,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ setActiveView })
     }
   }, [isAuthorized, activeSection]);
 
-  const handleGoogleLogin = async () => {
-    setLoginError('');
-    setShowEnableGuide(false);
-    setIsLoggingIn(true);
-    try {
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-    } catch (err: any) {
-      console.error('Google Sign-in failed:', err);
-      setLoginError(
-        language === 'ar'
-          ? 'فشل تسجيل الدخول عبر Google. قد تكون هناك قيود من المتصفح.'
-          : 'Google Sign-in failed. Please verify browser restrictions.'
-      );
-    } finally {
-      setIsLoggingIn(false);
-    }
-  };
+  // Google login removed
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -361,17 +341,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ setActiveView })
     try {
       // 1. Check dynamic security config from Firestore / Local cache
       const sec = await getAdminSecurityConfig();
-      const secEmail = (sec.adminEmail || 'bytera.ttech@gmail.com').toLowerCase();
+      const secEmail = (sec.adminEmail || 'abualss3ud@gmail.com').toLowerCase();
       
       // Match with configured password or hardcoded fallback
       const isConfiguredPasswordMatch = sec.adminPassword && sec.adminPassword === inputPass;
-      const isDefaultFallbackMatch = (inputEmail === 'bytera.ttech@gmail.com' || inputEmail === secEmail) && 
+      const isDefaultFallbackMatch = (inputEmail === 'abualss3ud@gmail.com' || inputEmail === secEmail) && 
                                     (inputPass === 'ByteraSecure2026!' || isConfiguredPasswordMatch);
 
       if (inputEmail === secEmail && (isConfiguredPasswordMatch || isDefaultFallbackMatch)) {
         const mockUser = {
           uid: 'admin_authenticated_user',
-          email: sec.adminEmail || 'bytera.ttech@gmail.com',
+          email: sec.adminEmail || 'abualss3ud@gmail.com',
           displayName: 'Abu Al-Saud (Portfolio Admin)',
           photoURL: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80',
           isBypass: true
@@ -461,7 +441,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ setActiveView })
         const sec = await getAdminSecurityConfig();
         const mockUser = {
           uid: 'admin_authenticated_user',
-          email: sec.adminEmail || 'bytera.ttech@gmail.com',
+          email: sec.adminEmail || 'abualss3ud@gmail.com',
           displayName: 'Abu Al-Saud (Portfolio Admin)',
           photoURL: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80',
           isBypass: true
@@ -615,22 +595,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ setActiveView })
           {/* Login Actions */}
           <div className="space-y-5">
             
-            {/* Primary Secure Google Auth */}
-            <button
-              onClick={handleGoogleLogin}
-              disabled={isLoggingIn}
-              className="w-full py-3.5 rounded-xl bg-[#111722] hover:bg-[#151B26] border border-[#202735] hover:border-[#5B7CFA]/40 text-[#F3F5F7] font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-3 cursor-pointer disabled:opacity-50 shadow-sm"
-            >
-              <Chrome className="w-4 h-4 text-[#5B7CFA]" />
-              <span>{language === 'ar' ? 'تسجيل الدخول عبر Google' : 'Sign in with Google Account'}</span>
-            </button>
-
-            <div className="relative flex py-2 items-center">
-              <div className="flex-grow border-t border-[#202735]"></div>
-              <span className="flex-shrink mx-4 text-[10px] text-[#64748B] font-mono uppercase tracking-wider">or secure passkey</span>
-              <div className="flex-grow border-t border-[#202735]"></div>
-            </div>
-
             {/* Fallback Email & Password Form */}
             <form onSubmit={handleEmailLogin} className="space-y-4">
               <div className="space-y-1.5">
@@ -640,7 +604,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ setActiveView })
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="bytera.ttech@gmail.com"
+                  placeholder="abualss3ud@gmail.com"
                   className="w-full bg-[#111722] border border-[#202735] focus:border-[#5B7CFA] text-xs text-[#F3F5F7] px-4 py-3 rounded-xl focus:outline-none"
                 />
               </div>
@@ -865,15 +829,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ setActiveView })
             </div>
           )}
 
-          {/* Footer credentials reminder */}
-          <div className="pt-4 border-t border-[#202735] flex items-start gap-2 text-[10px] text-[#64748B] leading-relaxed">
-            <Terminal className="w-3.5 h-3.5 text-[#5B7CFA] shrink-0 mt-0.5" />
-            <p>
-              {language === 'ar'
-                ? 'الحساب المصرح له بالإدارة هو: bytera.ttech@gmail.com | رقم الاسترجاع المعتمد: +201033108223.'
-                : 'Authorized administrator: bytera.ttech@gmail.com | Recovery phone: +201033108223.'}
-            </p>
-          </div>
+          {/* Footer credentials reminder removed */}
         </div>
       </div>
     );

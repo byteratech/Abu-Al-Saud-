@@ -1,7 +1,7 @@
 # Security Specification: Admin Dashboard & CMS Architecture
 
 ## 1. Data Invariants
-1. Only authenticated administrators with a verified email of `bytera.ttech@gmail.com` can create, update, or delete portfolio content (`projects`, `blogPosts`, `services`, `testimonials`, `media`, `settings`).
+1. Only authenticated administrators with a verified email of `abualss3ud@gmail.com` can create, update, or delete portfolio content (`projects`, `blogPosts`, `services`, `testimonials`, `media`, `settings`).
 2. Public visitors can only view content in `projects`, `blogPosts`, `services`, and `testimonials` that are explicitly flagged as `published == true`.
 3. Public visitors can submit contact messages (`messages`) but cannot read, list, update, or delete any messages.
 4. Messages are restricted to `allow read, write: if isAdmin()` except for `allow create` which is public but strictly validated.
@@ -21,7 +21,7 @@
 
 3. **Spoofed Admin Email Authenticated Write**
    - Payload: `{ title: { en: "Malicious" }, slug: "malicious" }`
-   - Context: `request.auth.token.email = "bytera.ttech@gmail.com"` but `request.auth.token.email_verified = false`
+   - Context: `request.auth.token.email = "abualss3ud@gmail.com"` but `request.auth.token.email_verified = false`
    - Target: `/projects/some-project`
    - Expected: `PERMISSION_DENIED`
 

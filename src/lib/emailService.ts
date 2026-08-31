@@ -1,6 +1,6 @@
 /**
  * Email Notification Service
- * Dispatches contact messages to admin email (bytera.ttech@gmail.com)
+ * Dispatches contact messages to admin email (abualss3ud@gmail.com)
  * and persists messages directly to Firestore database.
  */
 
@@ -14,7 +14,7 @@ export interface ContactMessagePayload {
   message: string;
 }
 
-export const DEFAULT_ADMIN_EMAIL = 'bytera.ttech@gmail.com';
+export const DEFAULT_ADMIN_EMAIL = 'abualss3ud@gmail.com';
 
 /**
  * Get current configured admin recipient email

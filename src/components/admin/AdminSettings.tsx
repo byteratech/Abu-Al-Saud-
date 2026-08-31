@@ -721,7 +721,7 @@ export const AdminSettings: React.FC = () => {
                   <span className="text-[10px] font-mono text-[#64748B] block">{language === 'ar' ? 'الإيميل المستلم للرسائل:' : 'Recipient Admin Inbox:'}</span>
                   <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#080B12] border border-[#202735] text-[#5B7CFA] font-mono text-xs font-bold">
                     <Mail className="w-3.5 h-3.5" />
-                    <span>{contactEmail || 'bytera.ttech@gmail.com'}</span>
+                    <span>{contactEmail || 'abualss3ud@gmail.com'}</span>
                   </div>
                 </div>
                 <p className="text-[10px] text-[#64748B]">

@@ -95,7 +95,7 @@ export const AdminWorkspace: React.FC = () => {
     } catch (_) {}
     return [
       { id: 'p1', title: 'حساب فيسبوك الرسمي', username: 'abualss3ud', pass: 'ByteraSecure2026!', url: 'https://facebook.com', category: 'social', notes: 'الحساب الرئيسي لإدارة الإعلانات والصفحة' },
-      { id: 'p2', title: 'لوحة تحكم Firebase', username: 'bytera.ttech@gmail.com', pass: 'FirebaseAdmin2026#', url: 'https://console.firebase.google.com', category: 'hosting', notes: 'قاعدة البيانات ومصادقة المستخدمين' },
+      { id: 'p2', title: 'لوحة تحكم Firebase', username: 'abualss3ud@gmail.com', pass: 'FirebaseAdmin2026#', url: 'https://console.firebase.google.com', category: 'hosting', notes: 'قاعدة البيانات ومصادقة المستخدمين' },
     ];
   });
   const [showPassMap, setShowPassMap] = useState<Record<string, boolean>>({});
