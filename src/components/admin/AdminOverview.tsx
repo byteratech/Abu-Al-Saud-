@@ -353,7 +353,7 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({ onNavigate }) => {
       )}
 
       {/* Daily Summary Status Card */}
-      <div className="p-6 rounded-2xl bg-gradient-to-br from-[#131B2E] via-[#0D111A] to-[#0A0E17] border border-[#202735] shadow-xl relative overflow-hidden">
+      <div className="p-6 rounded-2xl bg-[#0D111A] border border-[#202735] shadow-xl relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#5B7CFA]/5 rounded-full blur-3xl pointer-events-none"></div>
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
           <div className="flex items-center gap-3">
@@ -372,7 +372,7 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({ onNavigate }) => {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#182234] border border-[#2A3447] text-xs text-[#F3F5F7]">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#111722] border border-[#202735] text-xs text-[#F3F5F7]">
               <span className="w-2 h-2 rounded-full bg-[#5B7CFA]"></span>
               <span>{todayTasksCount} {language === 'ar' ? 'مستحقة اليوم' : 'due today'}</span>
             </div>
@@ -391,7 +391,7 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({ onNavigate }) => {
         </div>
 
         {urgentOrTodayTasks.length === 0 ? (
-          <div className="p-6 rounded-xl bg-[#0A0E17]/60 border border-[#1E293B] text-center text-[#9AA4B2] text-xs sm:text-sm">
+          <div className="p-6 rounded-xl bg-[#111722]/50 border border-[#202735] text-center text-[#9AA4B2] text-xs sm:text-sm">
             {language === 'ar' 
               ? '🎉 رائع! لا توجد مهام معلقة تستحق اليوم أو عاجلة. جدولك نظيف تماماً.'
               : '🎉 Awesome! No urgent or due-today tasks pending. Your schedule is clear.'}
@@ -401,7 +401,7 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({ onNavigate }) => {
             {urgentOrTodayTasks.map((task) => (
               <div 
                 key={task.id}
-                className={`p-4 rounded-xl border transition-all flex items-start gap-3 bg-[#0A0E17]/80 ${
+                className={`p-4 rounded-xl border transition-all flex items-start gap-3 bg-[#111722]/80 ${
                   task.priority === 'high' 
                     ? 'border-[#EF4444]/40 hover:border-[#EF4444]/70' 
                     : 'border-[#202735] hover:border-[#5B7CFA]/40'
@@ -411,11 +411,11 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({ onNavigate }) => {
                   type="checkbox"
                   checked={task.completed}
                   onChange={() => handleToggleTask(task.id)}
-                  className="mt-1 w-4 h-4 rounded border-[#334155] bg-[#1E293B] text-[#5B7CFA] focus:ring-0 cursor-pointer"
+                  className="mt-1 w-4 h-4 rounded border-[#202735] bg-[#111722] text-[#5B7CFA] focus:ring-0 cursor-pointer"
                 />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-semibold px-2 py-0.5 rounded bg-[#182234] text-[#9AA4B2] uppercase tracking-wider">
+                    <span className="text-xs font-semibold px-2 py-0.5 rounded bg-[#111722] border border-[#202735] text-[#9AA4B2] uppercase tracking-wider">
                       {task.category}
                     </span>
                     {task.priority === 'high' && (
