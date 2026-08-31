@@ -2,7 +2,7 @@ import { db } from './firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { AdminSecurityConfig } from '../types';
 
-export const DEFAULT_ADMIN_EMAIL = 'bytera.ttech@gmail.com';
+export const DEFAULT_ADMIN_EMAIL = 'abualss3ud@gmail.com';
 export const DEFAULT_ADMIN_PASSWORD = 'ByteraSecure2026!';
 export const DEFAULT_RECOVERY_PHONE = '201033108223';
 

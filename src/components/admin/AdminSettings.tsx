@@ -52,10 +52,10 @@ export const AdminSettings: React.FC = () => {
   // Site settings state
   const [websiteName, setWebsiteName] = useState('Abu Al-Saud Portfolio');
   const [logo, setLogo] = useState('');
-  const [contactEmail, setContactEmail] = useState('bytera.ttech@gmail.com');
+  const [contactEmail, setContactEmail] = useState('abualss3ud@gmail.com');
   
   // Admin Security State
-  const [adminEmail, setAdminEmail] = useState('bytera.ttech@gmail.com');
+  const [adminEmail, setAdminEmail] = useState('abualss3ud@gmail.com');
   const [adminPassword, setAdminPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [recoveryPhone, setRecoveryPhone] = useState('201033108223');
@@ -66,9 +66,12 @@ export const AdminSettings: React.FC = () => {
   // Socials
   const [github, setGithub] = useState('https://github.com');
   const [linkedin, setLinkedin] = useState('https://linkedin.com');
+  const [facebook, setFacebook] = useState('https://facebook.com');
+  const [tiktok, setTiktok] = useState('https://www.tiktok.com/@abualss3ud');
   const [youtube, setYoutube] = useState('https://youtube.com');
   const [instagram, setInstagram] = useState('https://instagram.com');
   const [x, setX] = useState('https://x.com');
+  const [whatsapp, setWhatsapp] = useState('https://wa.me/201033108223');
 
   // SEO Defaults
   const [seoTitle, setSeoTitle] = useState('Abu Al-Saud - Web Developer & Cybersecurity Specialist');
@@ -93,14 +96,17 @@ export const AdminSettings: React.FC = () => {
         const data = docSnap.data() as SiteSettings;
         setWebsiteName(data.websiteName || 'Abu Al-Saud Portfolio');
         setLogo(data.logo || '');
-        setContactEmail(data.contactEmail || 'bytera.ttech@gmail.com');
+        setContactEmail(data.contactEmail || 'abualss3ud@gmail.com');
         
         if (data.socials) {
           setGithub(data.socials.github || '');
           setLinkedin(data.socials.linkedin || '');
+          setFacebook(data.socials.facebook || 'https://facebook.com');
+          setTiktok(data.socials.tiktok || 'https://www.tiktok.com/@abualss3ud');
           setYoutube(data.socials.youtube || '');
           setInstagram(data.socials.instagram || '');
           setX(data.socials.x || '');
+          setWhatsapp(data.socials.whatsapp || 'https://wa.me/201033108223');
         }
 
         if (data.seo) {
@@ -114,7 +120,7 @@ export const AdminSettings: React.FC = () => {
 
       // 2. Admin Security Config
       const sec = await getAdminSecurityConfig();
-      setAdminEmail(sec.adminEmail || 'bytera.ttech@gmail.com');
+      setAdminEmail(sec.adminEmail || 'abualss3ud@gmail.com');
       setRecoveryPhone(sec.recoveryPhone || DEFAULT_RECOVERY_PHONE);
 
     } catch (err) {
@@ -269,13 +275,16 @@ export const AdminSettings: React.FC = () => {
       id: 'global',
       websiteName: websiteName.trim() || 'Abu Al-Saud Portfolio',
       logo: logo.trim() || '',
-      contactEmail: contactEmail.trim() || 'bytera.ttech@gmail.com',
+      contactEmail: contactEmail.trim() || 'abualss3ud@gmail.com',
       socials: {
         github: github.trim() || '',
         linkedin: linkedin.trim() || '',
+        facebook: facebook.trim() || '',
+        tiktok: tiktok.trim() || '',
         youtube: youtube.trim() || '',
         instagram: instagram.trim() || '',
-        x: x.trim() || ''
+        x: x.trim() || '',
+        whatsapp: whatsapp.trim() || ''
       },
       seo: {
         title: seoTitle.trim() || 'Abu Al-Saud - Web Developer & Cybersecurity Specialist',
@@ -523,6 +532,39 @@ export const AdminSettings: React.FC = () => {
                   value={linkedin}
                   onChange={(e) => setLinkedin(e.target.value)}
                   placeholder="https://linkedin.com/in/username"
+                  className="w-full bg-[#111722] border border-[#202735] focus:border-[#5B7CFA] text-xs text-[#F3F5F7] px-4 py-2.5 rounded-xl focus:outline-none"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[11px] font-bold text-[#9AA4B2] uppercase">Facebook Profile URL</label>
+                <input
+                  type="url"
+                  value={facebook}
+                  onChange={(e) => setFacebook(e.target.value)}
+                  placeholder="https://facebook.com/username"
+                  className="w-full bg-[#111722] border border-[#202735] focus:border-[#5B7CFA] text-xs text-[#F3F5F7] px-4 py-2.5 rounded-xl focus:outline-none"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[11px] font-bold text-[#9AA4B2] uppercase">TikTok Profile URL</label>
+                <input
+                  type="url"
+                  value={tiktok}
+                  onChange={(e) => setTiktok(e.target.value)}
+                  placeholder="https://www.tiktok.com/@username"
+                  className="w-full bg-[#111722] border border-[#202735] focus:border-[#5B7CFA] text-xs text-[#F3F5F7] px-4 py-2.5 rounded-xl focus:outline-none"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[11px] font-bold text-[#9AA4B2] uppercase">WhatsApp Chat Link / Phone</label>
+                <input
+                  type="text"
+                  value={whatsapp}
+                  onChange={(e) => setWhatsapp(e.target.value)}
+                  placeholder="https://wa.me/201033108223"
                   className="w-full bg-[#111722] border border-[#202735] focus:border-[#5B7CFA] text-xs text-[#F3F5F7] px-4 py-2.5 rounded-xl focus:outline-none"
                 />
               </div>

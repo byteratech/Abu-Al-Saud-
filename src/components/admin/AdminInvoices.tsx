@@ -1114,7 +1114,7 @@ export const AdminInvoices: React.FC<AdminInvoicesProps> = ({ initialInvoiceId }
                 <div className="space-y-1.5">
                   <h2 className="text-2xl font-black tracking-tight text-slate-900 uppercase">Abu Al-Saud</h2>
                   <p className="text-xs font-semibold text-slate-500">Web Development & Cybersecurity Specialist</p>
-                  <p className="text-xs text-slate-500">Email: bytera.ttech@gmail.com | Phone: +201033108223</p>
+                  <p className="text-xs text-slate-500">Email: abualss3ud@gmail.com | Phone: +201033108223</p>
                   <p className="text-xs text-slate-500">Cairo, Egypt</p>
                 </div>
 

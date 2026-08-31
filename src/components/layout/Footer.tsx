@@ -16,8 +16,10 @@ import {
   ArrowUp,
   Globe,
   Send,
-  CheckCircle2
+  CheckCircle2,
+  Phone
 } from 'lucide-react';
+import { TikTokIcon, WhatsAppIcon, FacebookIcon } from '../common/SocialIcons';
 
 interface FooterProps {
   setActiveView: (view: ActiveView) => void;
@@ -217,6 +219,28 @@ export const Footer: React.FC<FooterProps> = ({ setActiveView }) => {
                   <Linkedin className="w-4 h-4" />
                 </a>
               )}
+              {personalProfile.socialLinks.facebook && (
+                <a
+                  href={personalProfile.socialLinks.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook Profile"
+                  className="p-2.5 rounded-lg bg-[#111722] hover:bg-[#151B26] border border-[#202735] hover:border-[#5B7CFA]/40 text-[#9AA4B2] hover:text-[#F3F5F7] transition-all"
+                >
+                  <FacebookIcon className="w-4 h-4" />
+                </a>
+              )}
+              {personalProfile.socialLinks.tiktok && (
+                <a
+                  href={personalProfile.socialLinks.tiktok}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="TikTok Profile"
+                  className="p-2.5 rounded-lg bg-[#111722] hover:bg-[#151B26] border border-[#202735] hover:border-[#5B7CFA]/40 text-[#9AA4B2] hover:text-[#F3F5F7] transition-all"
+                >
+                  <TikTokIcon className="w-4 h-4" />
+                </a>
+              )}
               {personalProfile.socialLinks.youtube && (
                 <a
                   href={personalProfile.socialLinks.youtube}
@@ -250,13 +274,7 @@ export const Footer: React.FC<FooterProps> = ({ setActiveView }) => {
                   <Twitter className="w-4 h-4" />
                 </a>
               )}
-              <a
-                href={`mailto:${personalProfile.email}`}
-                aria-label="Send Email"
-                className="p-2.5 rounded-lg bg-[#111722] hover:bg-[#151B26] border border-[#202735] hover:border-[#5B7CFA]/40 text-[#9AA4B2] hover:text-[#F3F5F7] transition-all"
-              >
-                <Mail className="w-4 h-4" />
-              </a>
+
             </div>
           </div>
 

@@ -118,9 +118,13 @@ export interface JourneyStage {
 export interface SocialLinks {
   github?: string;
   linkedin?: string;
+  facebook?: string;
   youtube?: string;
   instagram?: string;
+  tiktok?: string;
   x?: string;
+  whatsapp?: string;
+  phone?: string;
   email: string;
 }
 
@@ -212,9 +216,13 @@ export interface SiteSettings {
   socials: {
     github?: string;
     linkedin?: string;
+    facebook?: string;
     youtube?: string;
     instagram?: string;
+    tiktok?: string;
     x?: string;
+    whatsapp?: string;
+    phone?: string;
   };
   seo: {
     title: string;

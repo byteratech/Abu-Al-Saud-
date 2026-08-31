@@ -14,7 +14,9 @@ export const personalProfile = {
     en: 'Qena, Egypt',
   },
   timezone: 'Africa/Cairo (GMT+2)',
-  email: 'bytera.ttech@gmail.com',
+  email: 'abualss3ud@gmail.com',
+  phone: '+201033108223',
+  whatsapp: '+201033108223',
   currentFocus: {
     ar: 'أمن تطبيقات الويب، تحليل حركة الشبكات، وإدارة وحماية أنظمة لينكس، مع توثيق التجارب المعملية.',
     en: 'Web Application Security, Network Traffic Analysis, Linux Server Hardening, and CTF Lab Documentation.',
@@ -22,10 +24,14 @@ export const personalProfile = {
   socialLinks: {
     github: 'https://github.com',
     linkedin: 'https://linkedin.com',
+    facebook: 'https://facebook.com',
     youtube: 'https://youtube.com',
     instagram: 'https://instagram.com',
+    tiktok: 'https://www.tiktok.com/@abualss3ud',
     x: 'https://x.com',
-    email: 'bytera.ttech@gmail.com',
+    whatsapp: 'https://wa.me/201033108223',
+    phone: 'tel:+201033108223',
+    email: 'abualss3ud@gmail.com',
   } as SocialLinks,
 };
 

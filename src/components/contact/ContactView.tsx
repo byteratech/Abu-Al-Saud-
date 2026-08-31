@@ -18,8 +18,10 @@ import {
   AlertCircle,
   MessageSquare,
   Loader2,
-  Bell
+  Bell,
+  Phone
 } from 'lucide-react';
+import { TikTokIcon, WhatsAppIcon, FacebookIcon } from '../common/SocialIcons';
 
 export const ContactView: React.FC = () => {
   const { language, t } = useLanguage();
@@ -33,6 +35,7 @@ export const ContactView: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [emailCopied, setEmailCopied] = useState(false);
+  const [phoneCopied, setPhoneCopied] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({
@@ -47,6 +50,16 @@ export const ContactView: React.FC = () => {
       navigator.clipboard.writeText(personalProfile.email);
       setEmailCopied(true);
       setTimeout(() => setEmailCopied(false), 2000);
+    } catch {
+      // Fallback
+    }
+  };
+
+  const handleCopyPhone = () => {
+    try {
+      navigator.clipboard.writeText(personalProfile.phone || '+201033108223');
+      setPhoneCopied(true);
+      setTimeout(() => setPhoneCopied(false), 2000);
     } catch {
       // Fallback
     }
@@ -124,13 +137,64 @@ export const ContactView: React.FC = () => {
 
             <div className="space-y-3 text-xs">
               
+              {/* Phone & WhatsApp item with direct chat & copy */}
+              <div className="p-3.5 rounded-xl bg-[#111722] border border-[#202735] flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-8 h-8 rounded-lg bg-[#10B981]/15 text-[#10B981] flex items-center justify-center shrink-0">
+                    <WhatsAppIcon className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-[10px] font-mono text-[#64748B] block">
+                      {language === 'ar' ? 'الهاتف وواتساب' : 'Phone & WhatsApp'}
+                    </span>
+                    <a 
+                      href="https://wa.me/201033108223" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      dir="ltr"
+                      style={{ unicodeBidi: 'isolate' }}
+                      className="text-xs font-mono font-bold text-[#F3F5F7] hover:text-[#10B981] transition-colors truncate block text-start tracking-wider"
+                    >
+                      +20 103 310 8223
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1 shrink-0">
+                  <a
+                    href="https://wa.me/201033108223"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1.5 rounded-lg bg-[#10B981]/15 hover:bg-[#10B981]/25 text-[#10B981] transition-colors"
+                    title={language === 'ar' ? 'محادثة واتساب مباشرة' : 'Direct WhatsApp Chat'}
+                  >
+                    <MessageSquare className="w-3.5 h-3.5" />
+                  </a>
+                  <button
+                    id="copy-phone-btn"
+                    onClick={handleCopyPhone}
+                    className="p-1.5 rounded-lg bg-[#151B26] hover:bg-[#202735] text-[#9AA4B2] hover:text-[#F3F5F7] transition-colors"
+                    title={language === 'ar' ? 'نسخ رقم الهاتف' : 'Copy Phone'}
+                  >
+                    {phoneCopied ? <Check className="w-3.5 h-3.5 text-[#10B981]" /> : <Copy className="w-3.5 h-3.5" />}
+                  </button>
+                </div>
+              </div>
+
               {/* Email item with copy button */}
               <div className="p-3.5 rounded-xl bg-[#111722] border border-[#202735] flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <Mail className="w-4 h-4 text-[#5B7CFA] shrink-0" />
+                  <div className="w-8 h-8 rounded-lg bg-[#5B7CFA]/15 text-[#5B7CFA] flex items-center justify-center shrink-0">
+                    <Mail className="w-4 h-4" />
+                  </div>
                   <div className="min-w-0">
                     <span className="text-[10px] font-mono text-[#64748B] block">Email</span>
-                    <span className="text-xs font-mono text-[#F3F5F7] truncate block">{personalProfile.email}</span>
+                    <a 
+                      href={`mailto:${personalProfile.email}`} 
+                      className="text-xs font-mono text-[#F3F5F7] hover:text-[#5B7CFA] transition-colors truncate block"
+                    >
+                      {personalProfile.email}
+                    </a>
                   </div>
                 </div>
 
@@ -193,6 +257,28 @@ export const ContactView: React.FC = () => {
                   <span>LinkedIn</span>
                 </a>
               )}
+              {personalProfile.socialLinks.facebook && (
+                <a
+                  href={personalProfile.socialLinks.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#111722] hover:bg-[#151B26] border border-[#202735] hover:border-[#5B7CFA]/40 text-xs font-mono text-[#9AA4B2] hover:text-[#F3F5F7] transition-all"
+                >
+                  <FacebookIcon className="w-3.5 h-3.5 text-[#5B7CFA]" />
+                  <span>Facebook</span>
+                </a>
+              )}
+              {personalProfile.socialLinks.tiktok && (
+                <a
+                  href={personalProfile.socialLinks.tiktok}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#111722] hover:bg-[#151B26] border border-[#202735] hover:border-[#5B7CFA]/40 text-xs font-mono text-[#9AA4B2] hover:text-[#F3F5F7] transition-all"
+                >
+                  <TikTokIcon className="w-3.5 h-3.5 text-[#5B7CFA]" />
+                  <span>TikTok</span>
+                </a>
+              )}
               {personalProfile.socialLinks.youtube && (
                 <a
                   href={personalProfile.socialLinks.youtube}
@@ -226,6 +312,7 @@ export const ContactView: React.FC = () => {
                   <span>X / Twitter</span>
                 </a>
               )}
+
             </div>
           </div>
 

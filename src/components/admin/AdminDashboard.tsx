@@ -44,7 +44,8 @@ import {
   VolumeX,
   Bell,
   BellRing,
-  Sparkles
+  Sparkles,
+  CheckSquare
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { ActiveView, CMSMessage } from '../../types';
@@ -70,6 +71,7 @@ import { AdminSettings } from './AdminSettings';
 import { AdminQuotations } from './AdminQuotations';
 import { AdminInvoices } from './AdminInvoices';
 import { AdminClients } from './AdminClients';
+import { AdminWorkspace } from './AdminWorkspace';
 
 // Security service for credentials and phone-based OTP recovery (201033108223)
 import { 
@@ -504,6 +506,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ setActiveView })
 
   const sidebarItems = [
     { id: 'overview', labelAr: 'الإحصائيات العامة', labelEn: 'Overview', icon: LayoutDashboard },
+    { id: 'workspace', labelAr: 'مساحة العمل ونوشن (Notion)', labelEn: 'Notion Workspace', icon: CheckSquare },
     { id: 'clients', labelAr: 'سجل وخزنة العملاء', labelEn: 'Clients & Vault', icon: Users },
     { id: 'quotations', labelAr: 'عروض الأسعار', labelEn: 'Quotations', icon: Calculator },
     { id: 'invoices', labelAr: 'الفواتير والمطالبات', labelEn: 'Invoices & Billing', icon: Receipt },
@@ -715,7 +718,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ setActiveView })
                           ? 'سيتم توليد رمز تحقق مشفر من 6 أرقام وإرساله مباشرة إلى رقم الهاتف المعتمد والوحيد لحسابك:'
                           : 'A 6-digit encrypted security code will be generated and dispatched directly to your authorized phone number:'}
                       </p>
-                      <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#080B12] border border-[#10B981]/40 text-[#10B981] font-mono font-bold text-sm">
+                      <div 
+                        dir="ltr"
+                        style={{ unicodeBidi: 'isolate' }}
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#080B12] border border-[#10B981]/40 text-[#10B981] font-mono font-bold text-sm"
+                      >
                         <Phone className="w-4 h-4 text-[#10B981]" />
                         <span>+{recoveryPhone}</span>
                       </div>
@@ -1160,6 +1167,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ setActiveView })
           <div className="max-w-7xl mx-auto">
             {activeSection === 'overview' && (
               <AdminOverview onNavigate={(sec) => setActiveSection(sec)} />
+            )}
+
+            {activeSection === 'workspace' && (
+              <AdminWorkspace />
             )}
 
             {activeSection === 'clients' && (
