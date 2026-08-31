@@ -299,3 +299,48 @@ export interface AdminSecurityConfig {
   lastPasswordChangedAt?: string;
 }
 
+export type ClientStatus = 'active' | 'pending' | 'vip' | 'archived';
+
+export type CredentialType = 
+  | 'cpanel' 
+  | 'hosting' 
+  | 'wordpress' 
+  | 'database' 
+  | 'api_key' 
+  | 'email_account' 
+  | 'ftp' 
+  | 'server_ssh' 
+  | 'social_media' 
+  | 'admin_panel' 
+  | 'other';
+
+export interface ClientCredential {
+  id: string;
+  type: CredentialType;
+  title: string;
+  url?: string;
+  username?: string;
+  password?: string;
+  accessKey?: string;
+  notes?: string;
+}
+
+export interface CMSClient {
+  id: string;
+  name: string;
+  company?: string;
+  email: string;
+  phone: string;
+  whatsapp?: string;
+  address?: string;
+  status: ClientStatus;
+  serviceType?: string;
+  totalRevenue?: number;
+  currency?: SupportedCurrency;
+  notes?: string;
+  credentials: ClientCredential[];
+  tags?: string[];
+  createdAt: string;
+  updatedAt?: string;
+}
+

@@ -29,6 +29,7 @@ interface OverviewStats {
   unreadMessages: number;
   totalServices: number;
   totalTestimonials: number;
+  totalClients: number;
 }
 
 interface AdminOverviewProps {
@@ -46,7 +47,8 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({ onNavigate }) => {
     draftBlogPosts: 0,
     unreadMessages: 0,
     totalServices: 0,
-    totalTestimonials: 0
+    totalTestimonials: 0,
+    totalClients: 0
   });
   const [isLoading, setIsLoading] = useState(true);
   const [recentProjects, setRecentProjects] = useState<any[]>([]);
@@ -168,6 +170,16 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({ onNavigate }) => {
         }
       }
 
+      // 6. Fetch Clients
+      let clientsCount = 0;
+      try {
+        const clientsSnap = await getDocs(collection(db, 'clients'));
+        clientsCount = clientsSnap.size;
+      } catch (err) {
+        const saved = localStorage.getItem('cms_local_clients');
+        clientsCount = saved ? JSON.parse(saved).length : 2;
+      }
+
       // Stats Calculations
       const publishedProjectsCount = projectsList.filter(p => p.published).length;
       const publishedBlogPostsCount = postsList.filter(p => p.published).length;
@@ -181,7 +193,8 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({ onNavigate }) => {
         draftBlogPosts: postsList.length - publishedBlogPostsCount,
         unreadMessages: unreadCount,
         totalServices: servicesCount,
-        totalTestimonials: testimonialsCount
+        totalTestimonials: testimonialsCount,
+        totalClients: clientsCount
       });
 
       // Sort recent
@@ -388,8 +401,33 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({ onNavigate }) => {
 
       </div>
 
-      {/* Quick Financial Operations (Quotations & Invoices) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Quick Financial Operations & Client Vault */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div 
+          onClick={() => onNavigate('clients')}
+          className="p-4 rounded-2xl bg-[#0D111A] border border-amber-500/20 hover:border-amber-400 transition-all cursor-pointer flex items-center justify-between group"
+        >
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-amber-500/15 text-amber-400 group-hover:scale-105 transition-transform">
+              <Users className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h4 className="text-sm font-bold text-[#F3F5F7]">
+                  {language === 'ar' ? 'سجل وخزنة العملاء' : 'Clients & Vault'}
+                </h4>
+                <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-500/15 text-amber-300 font-mono">
+                  {stats.totalClients}
+                </span>
+              </div>
+              <p className="text-[11px] text-[#9AA4B2]">
+                {language === 'ar' ? 'سجل بيانات العملاء، الهواتف، كلمات المرور، والـ cPanel' : 'Manage client phones, encrypted credentials & passwords'}
+              </p>
+            </div>
+          </div>
+          <ArrowUpRight className="w-4 h-4 text-amber-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+        </div>
+
         <div 
           onClick={() => onNavigate('quotations')}
           className="p-4 rounded-2xl bg-[#0D111A] border border-[#5B7CFA]/20 hover:border-[#5B7CFA] transition-all cursor-pointer flex items-center justify-between group"
@@ -400,10 +438,10 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({ onNavigate }) => {
             </div>
             <div>
               <h4 className="text-sm font-bold text-[#F3F5F7]">
-                {language === 'ar' ? 'إنشاء وإدارة عروض الأسعار (Quotations)' : 'Create & Manage Quotations'}
+                {language === 'ar' ? 'عروض الأسعار (Quotations)' : 'Create & Manage Quotations'}
               </h4>
               <p className="text-[11px] text-[#9AA4B2]">
-                {language === 'ar' ? 'إعداد عروض أسعار تفصيلية للعملاء مع إمكانية تحويلها لفواتير فورية' : 'Create professional client quotes & convert to invoices'}
+                {language === 'ar' ? 'إعداد عروض أسعار تفصيلية للعملاء وتحويلها لفواتير' : 'Create professional client quotes & convert to invoices'}
               </p>
             </div>
           </div>
@@ -420,10 +458,10 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({ onNavigate }) => {
             </div>
             <div>
               <h4 className="text-sm font-bold text-[#F3F5F7]">
-                {language === 'ar' ? 'إدارة الفواتير والمطالبات المالية (Invoices)' : 'Billing & Invoice Tracking'}
+                {language === 'ar' ? 'الفواتير والمطالبات (Invoices)' : 'Billing & Invoice Tracking'}
               </h4>
               <p className="text-[11px] text-[#9AA4B2]">
-                {language === 'ar' ? 'متابعة الدفعات وحالة التحصيل ومشاركة فواتير PDF عبر واتساب' : 'Track payment statuses, print PDF invoices, and send to clients'}
+                {language === 'ar' ? 'متابعة الدفعات ومشاركة فواتير PDF عبر واتساب' : 'Track payment statuses & print PDF invoices'}
               </p>
             </div>
           </div>

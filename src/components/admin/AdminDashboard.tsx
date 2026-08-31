@@ -69,6 +69,7 @@ import { AdminMedia } from './AdminMedia';
 import { AdminSettings } from './AdminSettings';
 import { AdminQuotations } from './AdminQuotations';
 import { AdminInvoices } from './AdminInvoices';
+import { AdminClients } from './AdminClients';
 
 // Security service for credentials and phone-based OTP recovery (201033108223)
 import { 
@@ -503,12 +504,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ setActiveView })
 
   const sidebarItems = [
     { id: 'overview', labelAr: 'الإحصائيات العامة', labelEn: 'Overview', icon: LayoutDashboard },
+    { id: 'clients', labelAr: 'سجل وخزنة العملاء', labelEn: 'Clients & Vault', icon: Users },
     { id: 'quotations', labelAr: 'عروض الأسعار', labelEn: 'Quotations', icon: Calculator },
     { id: 'invoices', labelAr: 'الفواتير والمطالبات', labelEn: 'Invoices & Billing', icon: Receipt },
     { id: 'projects', labelAr: 'المشاريع', labelEn: 'Projects', icon: Briefcase },
     { id: 'blog', labelAr: 'المدونة والمقالات', labelEn: 'Blog Posts', icon: FileText },
     { id: 'services', labelAr: 'الخدمات الفنية', labelEn: 'Services', icon: Layers },
-    { id: 'testimonials', labelAr: 'آراء العملاء', labelEn: 'Testimonials', icon: Users },
+    { id: 'testimonials', labelAr: 'آراء العملاء', labelEn: 'Testimonials', icon: Sparkles },
     { id: 'messages', labelAr: 'رسائل التواصل', labelEn: 'Messages', icon: Mail, badge: true },
     { id: 'media', labelAr: 'مكتبة الوسائط', labelEn: 'Media & Files', icon: ImageIcon },
     { id: 'settings', labelAr: 'الإعدادات العامة والأمان', labelEn: 'Settings & Security', icon: SettingsIcon }
@@ -1158,6 +1160,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ setActiveView })
           <div className="max-w-7xl mx-auto">
             {activeSection === 'overview' && (
               <AdminOverview onNavigate={(sec) => setActiveSection(sec)} />
+            )}
+
+            {activeSection === 'clients' && (
+              <AdminClients 
+                onNavigateToQuote={(clientInfo) => {
+                  setActiveSection('quotations');
+                }}
+                onNavigateToInvoice={(clientInfo) => {
+                  setActiveSection('invoices');
+                }}
+              />
             )}
 
             {activeSection === 'quotations' && (

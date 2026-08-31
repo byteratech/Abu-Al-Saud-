@@ -118,9 +118,79 @@
         "createdAt": { "type": "string" }
       },
       "required": ["articleSlug", "author", "text", "createdAt"]
+    },
+    "Client": {
+      "title": "Client",
+      "description": "Client directory and credential vault records",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "company": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "whatsapp": { "type": "string" },
+        "address": { "type": "string" },
+        "status": { "type": "string" },
+        "serviceType": { "type": "string" },
+        "totalRevenue": { "type": "number" },
+        "currency": { "type": "string" },
+        "notes": { "type": "string" },
+        "credentials": { "type": "array" },
+        "tags": { "type": "array" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["name", "email", "phone", "status", "createdAt"]
+    },
+    "Quotation": {
+      "title": "Quotation",
+      "description": "Financial price proposals and quotations",
+      "type": "object",
+      "properties": {
+        "quotationNumber": { "type": "string" },
+        "clientName": { "type": "string" },
+        "clientCompany": { "type": "string" },
+        "clientEmail": { "type": "string" },
+        "clientPhone": { "type": "string" },
+        "currency": { "type": "string" },
+        "items": { "type": "array" },
+        "total": { "type": "number" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["quotationNumber", "clientName", "items", "total", "status", "createdAt"]
+    },
+    "Invoice": {
+      "title": "Invoice",
+      "description": "Client invoices and billing statements",
+      "type": "object",
+      "properties": {
+        "invoiceNumber": { "type": "string" },
+        "clientName": { "type": "string" },
+        "currency": { "type": "string" },
+        "items": { "type": "array" },
+        "total": { "type": "number" },
+        "paidAmount": { "type": "number" },
+        "remainingAmount": { "type": "number" },
+        "paymentStatus": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["invoiceNumber", "clientName", "items", "total", "paymentStatus", "createdAt"]
     }
   },
   "firestore": {
+    "/clients/{clientId}": {
+      "schema": "Client",
+      "description": "Collection storing client directory and secure access vault"
+    },
+    "/quotations/{quotationId}": {
+      "schema": "Quotation",
+      "description": "Collection storing quotations and price offers"
+    },
+    "/invoices/{invoiceId}": {
+      "schema": "Invoice",
+      "description": "Collection storing client invoices and billing records"
+    },
     "/comments/{commentId}": {
       "schema": "Comment",
       "description": "Collection storing public article comments"
