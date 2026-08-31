@@ -1,0 +1,274 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-main: #080B12;
+    --bg-secondary: #0D111A;
+    --surface-main: #111722;
+    --surface-secondary: #151B26;
+    --surface-tertiary: #1C2433;
+    --text-primary: #F3F5F7;
+    --text-secondary: #9AA4B2;
+    --text-muted: #64748B;
+    --border-color: #202735;
+    --border-subtle: #19202E;
+    --accent-color: #5B7CFA;
+    --accent-hover: #4B6EF5;
+    --accent-glow: rgba(91, 124, 250, 0.15);
+  }
+
+  html.light {
+    --bg-main: #FFFFFF;         /* Pure white background as requested */
+    --bg-secondary: #FFFFFF;    /* white */
+    --surface-main: #F1F5F9;    /* slate-100 */
+    --surface-secondary: #E2E8F0; /* slate-200 */
+    --surface-tertiary: #CBD5E1;  /* slate-300 */
+    --text-primary: #0F172A;    /* slate-900 */
+    --text-secondary: #475569;  /* slate-600 */
+    --text-muted: #64748B;      /* slate-500 */
+    --border-color: #E2E8F0;    /* slate-200 */
+    --border-subtle: #F1F5F9;   /* slate-100 */
+    --accent-color: #5B7CFA;
+    --accent-hover: #4B6EF5;
+    --accent-glow: rgba(91, 124, 250, 0.08);
+  }
+
+  html[lang="ar"] {
+    font-family: 'Cairo', 'Tajawal', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  html[lang="en"] {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  code, pre, kbd, samp {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080B12;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #202735;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #333F54;
+}
+
+/* Text glow & subtle accents without cheesy clichés */
+.editorial-grid {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(32, 39, 53, 0.3) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(32, 39, 53, 0.3) 1px, transparent 1px);
+}
+
+.subtle-radar {
+  background: radial-gradient(circle at center, rgba(91, 124, 250, 0.08) 0%, transparent 70%);
+}
+
+/* Light Mode Overrides for Hardcoded Hex Colors */
+html.light {
+  /* Scrollbar overrides */
+  ::-webkit-scrollbar-track {
+    background: #F8FAFC !important;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #CBD5E1 !important;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8 !important;
+  }
+
+  /* Editorial grid override */
+  .editorial-grid {
+    background-image: 
+      linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px) !important;
+  }
+
+  /* Subtle radar override */
+  .subtle-radar {
+    background: radial-gradient(circle at center, rgba(91, 124, 250, 0.04) 0%, transparent 70%) !important;
+  }
+
+  /* Hardcoded Backgrounds (Main, secondary, and nested surfaces) */
+  .bg-\[\#080B12\] { background-color: var(--bg-main) !important; }
+  .bg-\[\#0D111A\] { background-color: var(--bg-secondary) !important; }
+  .bg-\[\#111722\] { background-color: var(--surface-main) !important; }
+  .bg-\[\#151B26\] { background-color: var(--surface-secondary) !important; }
+  .bg-\[\#1C2433\] { background-color: var(--surface-tertiary) !important; }
+  .bg-\[\#1F293D\] { 
+    background-color: var(--surface-main) !important; 
+    color: var(--text-primary) !important;
+  }
+  .bg-\[\#202735\] { background-color: var(--surface-secondary) !important; }
+
+  /* Background Opacities & Blurs */
+  .bg-\[\#080B12\]\/85 { background-color: rgba(248, 250, 252, 0.85) !important; }
+  .bg-\[\#080B12\]\/98 { background-color: rgba(248, 250, 252, 0.98) !important; }
+  .bg-\[\#080B12\]\/80 { background-color: rgba(248, 250, 252, 0.80) !important; }
+  .bg-\[\#0D111A\]\/90 { background-color: rgba(255, 255, 255, 0.90) !important; }
+  .bg-\[\#0D111A\]\/60 { background-color: rgba(255, 255, 255, 0.60) !important; }
+  .bg-\[\#111722\]\/80 { background-color: rgba(241, 245, 249, 0.80) !important; }
+  .bg-\[\#111722\]\/50 { background-color: rgba(241, 245, 249, 0.50) !important; }
+  .hover\:bg-\[\#111722\]:hover { background-color: var(--surface-main) !important; }
+  .hover\:bg-\[\#151B26\]:hover { background-color: var(--surface-secondary) !important; }
+  .hover\:bg-\[\#202735\]:hover { background-color: var(--surface-tertiary) !important; }
+
+  /* Hardcoded Text colors (Primary, alternative, secondary, and muted) */
+  .text-\[\#F3F5F7\] { color: var(--text-primary) !important; }
+  .text-\[\#E5E9F0\] { color: var(--text-primary) !important; }
+  .text-\[\#9AA4B2\] { color: var(--text-secondary) !important; }
+  .text-\[\#64748B\] { color: var(--text-muted) !important; }
+  .hover\:text-\[\#F3F5F7\]:hover { color: var(--text-primary) !important; }
+
+  /* Hardcoded Borders (Standard and subtle) */
+  .border-\[\#202735\] { border-color: var(--border-color) !important; }
+  .border-\[\#19202E\] { border-color: var(--border-subtle) !important; }
+  .border-\[\#374151\] { border-color: var(--border-color) !important; }
+
+  /* Inputs, Textareas, and Selects in Light Mode */
+  input, textarea, select {
+    color: var(--text-primary) !important;
+  }
+  input::placeholder, textarea::placeholder {
+    color: var(--text-muted) !important;
+  }
+  select option {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+  }
+
+  /* Navbar Specific Light Mode Fine-Tuning */
+  #main-header {
+    transition: background-color 300ms, border-color 300ms, py 300ms;
+  }
+  
+  /* Brand text transitions */
+  #brand-logo-btn:hover span {
+    color: var(--accent-color) !important;
+  }
+  
+  /* Desktop navigation pill container */
+  #desktop-nav {
+    background-color: rgba(241, 245, 249, 0.85) !important;
+    border-color: var(--border-color) !important;
+    backdrop-filter: blur(8px);
+  }
+
+  /* Non-active links inside desktop nav */
+  #desktop-nav button:not(.bg-\[\#5B7CFA\]) {
+    color: var(--text-secondary) !important;
+  }
+  #desktop-nav button:not(.bg-\[\#5B7CFA\]):hover {
+    color: var(--text-primary) !important;
+    background-color: var(--surface-secondary) !important;
+  }
+
+  /* Action control buttons in header (theme & language toggles, mobile menu) */
+  #theme-toggle-btn,
+  #language-toggle-btn,
+  #mobile-menu-toggle {
+    background-color: var(--surface-main) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+  }
+  #theme-toggle-btn:hover,
+  #language-toggle-btn:hover,
+  #mobile-menu-toggle:hover {
+    background-color: var(--surface-secondary) !important;
+    border-color: var(--accent-color) !important;
+  }
+
+  /* Mobile menu drawer styling */
+  #mobile-nav-drawer {
+    background-color: rgba(248, 250, 252, 0.98) !important;
+    border-color: var(--border-color) !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+  }
+  #mobile-nav-drawer button:not(.bg-\[\#5B7CFA\]) {
+    color: var(--text-secondary) !important;
+  }
+  #mobile-nav-drawer button:not(.bg-\[\#5B7CFA\]):hover {
+    color: var(--text-primary) !important;
+    background-color: var(--surface-main) !important;
+  }
+  #mobile-lang-btn {
+    background-color: var(--surface-main) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+  }
+  #mobile-lang-btn:hover {
+    background-color: var(--surface-secondary) !important;
+  }
+
+  /* Standard overrides for SVG/lucide sub-elements when they hover or get state */
+  .group:hover .group-hover\:text-white {
+    color: var(--text-primary) !important;
+  }
+
+  /* Footer & Newsletter Specific Overrides */
+  #main-footer {
+    background-color: #F8FAFC !important; /* soft elegant background for footer */
+    border-color: var(--border-color) !important;
+  }
+  
+  /* The newsletter banner gradient container */
+  .bg-gradient-to-br.from-\[\#111722\].to-\[\#0A0E17\] {
+    background-image: linear-gradient(to bottom right, #FFFFFF, #F1F5F9) !important;
+    border-color: var(--border-color) !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02) !important;
+  }
+
+  /* Newsletter Email input field */
+  .bg-gradient-to-br.from-\[\#111722\].to-\[\#0A0E17\] input[type="email"] {
+    background-color: #FFFFFF !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+  }
+  .bg-gradient-to-br.from-\[\#111722\].to-\[\#0A0E17\] input[type="email"]::placeholder {
+    color: var(--text-muted) !important;
+  }
+
+  /* Brands location icons and text */
+  #main-footer .bg-\[\#111722\] {
+    background-color: var(--surface-main) !important;
+    border-color: var(--border-color) !important;
+  }
+
+  /* Social links buttons inside footer */
+  #main-footer a.p-2\.5 {
+    background-color: #FFFFFF !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-secondary) !important;
+  }
+  #main-footer a.p-2\.5:hover {
+    background-color: var(--surface-main) !important;
+    border-color: var(--accent-color) !important;
+    color: var(--accent-color) !important;
+  }
+
+  /* Scroll to top button in footer */
+  #scroll-to-top-btn {
+    background-color: #FFFFFF !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-secondary) !important;
+  }
+  #scroll-to-top-btn:hover {
+    background-color: var(--surface-main) !important;
+    border-color: var(--accent-color) !important;
+    color: var(--accent-color) !important;
+  }
+}
+

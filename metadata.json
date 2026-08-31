@@ -1,0 +1,8 @@
+{
+  "name": "Abu Al-Saud — Personal Website & Digital Notebook",
+  "description": "The personal digital space, portfolio, cybersecurity lab notebook, and technical journal of Abu Al-Saud (Mohamed Mohamed Abu Al-Saud).",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

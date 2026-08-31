@@ -1,0 +1,157 @@
+{
+  "entities": {
+    "Project": {
+      "title": "Project",
+      "description": "CMS project items",
+      "type": "object",
+      "properties": {
+        "slug": { "type": "string" },
+        "title": { "type": "object" },
+        "description": { "type": "object" },
+        "category": { "type": "string" },
+        "year": { "type": "string" },
+        "technologies": { "type": "array" },
+        "status": { "type": "string" },
+        "githubUrl": { "type": "string" },
+        "liveUrl": { "type": "string" },
+        "featured": { "type": "boolean" },
+        "published": { "type": "boolean" },
+        "order": { "type": "number" },
+        "caseStudy": { "type": "object" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["slug", "title", "description", "category", "year", "technologies", "status", "published", "order", "createdAt"]
+    },
+    "BlogPost": {
+      "title": "BlogPost",
+      "description": "CMS blog posts",
+      "type": "object",
+      "properties": {
+        "slug": { "type": "string" },
+        "title": { "type": "object" },
+        "description": { "type": "object" },
+        "content": { "type": "object" },
+        "coverImage": { "type": "string" },
+        "excerpt": { "type": "object" },
+        "category": { "type": "string" },
+        "tags": { "type": "array" },
+        "author": { "type": "string" },
+        "published": { "type": "boolean" },
+        "featured": { "type": "boolean" },
+        "publishedAt": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["slug", "title", "description", "content", "category", "tags", "author", "published", "createdAt"]
+    },
+    "Service": {
+      "title": "Service",
+      "description": "CMS platform services",
+      "type": "object",
+      "properties": {
+        "title": { "type": "object" },
+        "description": { "type": "object" },
+        "icon": { "type": "string" },
+        "published": { "type": "boolean" },
+        "order": { "type": "number" }
+      },
+      "required": ["title", "description", "icon", "published", "order"]
+    },
+    "Testimonial": {
+      "title": "Testimonial",
+      "description": "CMS client testimonials",
+      "type": "object",
+      "properties": {
+        "clientName": { "type": "string" },
+        "companyName": { "type": "string" },
+        "content": { "type": "object" },
+        "clientImage": { "type": "string" },
+        "published": { "type": "boolean" }
+      },
+      "required": ["clientName", "content", "published"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Contact form messages from public website",
+      "type": "object",
+      "properties": {
+        "senderName": { "type": "string" },
+        "email": { "type": "string" },
+        "message": { "type": "string" },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["senderName", "email", "message", "read", "createdAt"]
+    },
+    "Media": {
+      "title": "Media",
+      "description": "Uploaded images and assets",
+      "type": "object",
+      "properties": {
+        "url": { "type": "string" },
+        "fileName": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["url", "fileName", "createdAt"]
+    },
+    "Settings": {
+      "title": "Settings",
+      "description": "Global website configuration",
+      "type": "object",
+      "properties": {
+        "websiteName": { "type": "string" },
+        "logo": { "type": "string" },
+        "contactEmail": { "type": "string" },
+        "socials": { "type": "object" },
+        "seo": { "type": "object" },
+        "language": { "type": "string" }
+      },
+      "required": ["websiteName", "contactEmail"]
+    },
+    "Comment": {
+      "title": "Comment",
+      "description": "Article comment submitted by visitors",
+      "type": "object",
+      "properties": {
+        "articleSlug": { "type": "string" },
+        "author": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["articleSlug", "author", "text", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/comments/{commentId}": {
+      "schema": "Comment",
+      "description": "Collection storing public article comments"
+    },
+    "/projects/{projectId}": {
+      "schema": "Project",
+      "description": "Collection storing public and draft portfolio projects"
+    },
+    "/blogPosts/{postId}": {
+      "schema": "BlogPost",
+      "description": "Collection storing public and draft blog posts"
+    },
+    "/services/{serviceId}": {
+      "schema": "Service",
+      "description": "Collection storing platform services"
+    },
+    "/testimonials/{testimonialId}": {
+      "schema": "Testimonial",
+      "description": "Collection storing client testimonials"
+    },
+    "/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Collection storing visitor contact messages"
+    },
+    "/media/{mediaId}": {
+      "schema": "Media",
+      "description": "Collection storing uploaded media items"
+    },
+    "/settings/{settingsId}": {
+      "schema": "Settings",
+      "description": "Collection storing global configuration settings"
+    }
+  }
+}

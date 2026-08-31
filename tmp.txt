@@ -1,0 +1,8 @@
+              </h1>
+              <p className="text-lg sm:text-xl text-[#9AA4B2] max-w-2xl leading-relaxed pt-2 whitespace-pre-line">
+                {t.hero.subtitle}
+              </p>
+            </div>
+
+
+
