@@ -36,14 +36,9 @@ jobs:
           node-version: 20
           cache: 'npm'
       - name: Install dependencies
-        run: npm ci
+        run: npm install
       - name: Build
-        # Set base path dynamically based on the repo name for GitHub Pages
-        run: |
-          # Extract repository name from github.repository (e.g. username/repo-name -> repo-name)
-          REPO_NAME=$(echo ${{ github.repository }} | cut -d'/' -f2)
-          # Build with the correct base path
-          npm run build -- --base=/${REPO_NAME}/
+        run: npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
